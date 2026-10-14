@@ -1,0 +1,99 @@
+{
+    _id: ObjectId('69d7289a11cc3caed01dd3bf'),
+    id: 'store_data',
+    payload: {
+        status: 'success',
+        message: 'Connection Successful',
+        dateTime: '2026-04-10 08:27:29',
+        generalSettings: [
+            {
+                id: 1,
+                key: 'AppName',
+                value: 'MenuX Online Services',
+                created_at: '2026-03-27T02:32:05.000000Z',
+                updated_at: '2026-03-27T02:32:05.000000Z'
+            },
+            {
+                id: 2,
+                key: 'logo',
+                value: 'storage/logos/sidebar_logo_1774578725.png',
+                created_at: '2026-03-27T02:32:05.000000Z',
+                updated_at: '2026-03-27T02:32:05.000000Z'
+            },
+            {
+                id: 3,
+                key: 'logo_size',
+                value: '14',
+                created_at: '2026-03-27T02:32:06.000000Z',
+                updated_at: '2026-03-27T02:32:06.000000Z'
+            }
+        ],
+        receiptFormats: [
+            {
+                id: 1,
+                name: 'XRead',
+                header: '<p class="ql-align-center">XREAD</p><p class="ql-align-center">Popeyes Philippines Inc.</p><p class="ql-align-center">PLK-Dasma</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                footer: '<p class="ql-align-center">GenieX Technology Inc.</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                created_at: '2026-04-09T03:07:18.000000Z',
+                updated_at: '2026-04-09T03:07:18.000000Z'
+            },
+            {
+                id: 2,
+                name: 'ZRead',
+                header: '<p class="ql-align-center">ZRead</p><p class="ql-align-center">Popeyes Philippines Inc.</p><p class="ql-align-center">PLK-DASMA</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                footer: '<p class="ql-align-center">GenieX Technology Inc.</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                created_at: '2026-04-09T03:07:45.000000Z',
+                updated_at: '2026-04-09T03:07:45.000000Z'
+            },
+            {
+                id: 3,
+                name: 'Regular Transaction',
+                header: '<p class="ql-align-center"><strong>Dunkin Donuts</strong></p><p class="ql-align-center">Dunkin-Kampri</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                footer: '<p class="ql-align-center">GenieX Technology Inc.</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                created_at: '2026-04-09T03:08:28.000000Z',
+                updated_at: '2026-04-09T03:08:28.000000Z'
+            },
+            {
+                id: 4,
+                name: 'Acknowledgement Reciept',
+                header: '<p class="ql-align-center"><strong>Dunkin Donuts</strong></p><p class="ql-align-center">Dunkins-GenieX</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                footer: '<p class="ql-align-center">GenieX Technology Inc.</p><p class="ql-align-center">Kampri Bldg, Chino Rocess Ave.</p><p class="ql-align-center">Makati City, Manila, Philippines</p><p class="ql-align-center">VAT:{{process.env.NEXT_PUBLIC_VAT}}</p><p class="ql-align-center">TIN : {{process.env.NEXT_PUBLIC_TIN}}</p><p class="ql-align-center">MIN : {{process.env.NEXT_PUBLIC_MIN}}</p><p class="ql-align-center">PTU : {{process.env.NEXT_PUBLIC_PTU}}</p><p class="ql-align-center">SN : {{process.env.NEXT_PUBLIC_SERIALNO}}</p><p><br></p>',
+                created_at: '2026-04-09T03:09:07.000000Z',
+                updated_at: '2026-04-09T03:09:07.000000Z'
+            }
+        ],
+        data: {
+            id: 1,
+            store_id: 'store-00001',
+            series_type: 'WS',
+            number_of_work_station: 5,
+            name: 'F&B - San Lorenzo',
+            description: '<p>This is the test Store</p>',
+            open_time: '10:00:00',
+            close_time: '23:59:00',
+            address: '718, P. Paterno Street, Quiapo, Manila, 1001, Philippines',
+            email: 'test@geniex.tech',
+            contact_number: '0956512534',
+            pos_type: 'gxpos',
+            emp_code: null,
+            emp_pin: null,
+            store_url: null,
+            longitude: '120.9842',
+            latitude: '14.5995',
+            merchant_id: 'gXPOS-123',
+            merchant_code: 'DCE3RYZ',
+            partner_merchant_id: 'F&B - San Lorenzo',
+            currency: 'PHP',
+            code: '₱',
+            exponent: '2',
+            services_charge: 0,
+            token_expiry: null,
+            created_at: '2026-03-27T02:27:49.000000Z',
+            updated_at: '2026-04-09T03:33:51.000000Z',
+            undefinedvars: []
+        }
+    },
+    lastUpdated: '2026-04-10T00:27:30.317Z',
+    createdAt: ISODate('2026-04-09T04:18:34.140Z'),
+    updatedAt: ISODate('2026-04-10T00:27:30.364Z')
+}

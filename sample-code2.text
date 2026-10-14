@@ -1,0 +1,27 @@
+export async function fireReceiptPrint(
+  receiptData: ReceiptData,
+  printType = 'SALES INVOICE',
+  cfgOverride?: AppConfig,
+): Promise<void> {
+  let cfg = cfgOverride ?? CONFIG_DEFAULTS;
+  if (!cfgOverride) {
+    try {
+      const res = await fetch('/api/settings', { cache: 'no-store' });
+      if (res.ok) cfg = { ...CONFIG_DEFAULTS, ...(await res.json()) };
+    } catch { }
+  }
+  const html = buildReceiptHtml(receiptData, cfg, printType);
+ 
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;width:0;height:0;border:none;top:-9999px;left:-9999px;';
+  document.body.appendChild(iframe);
+  iframe.contentDocument!.open();
+  iframe.contentDocument!.write(html);
+  iframe.contentDocument!.close();
+ 
+  setTimeout(() => {
+    iframe.contentWindow!.focus();
+    iframe.contentWindow!.print();
+    setTimeout(() => document.body.removeChild(iframe), 2000);
+  }, 100);
+}

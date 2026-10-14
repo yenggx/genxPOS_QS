@@ -1,0 +1,169 @@
+ito yung pag build ng html
+export function buildReceiptHtml(receiptData: ReceiptData, cfg: AppConfig, printType = 'SALES INVOICE'): string {
+  const format = RECEIPT_FORMATS.find((f: any) => f.id === cfg.activeReceiptFormatId) ?? RECEIPT_FORMATS[0];
+ 
+  const headerHtml = quillToReceiptHtml(format.header, cfg);
+  const footerHtml = quillToReceiptHtml(format.footer, cfg);
+ 
+  // ── Determine Status & Multipliers ──
+  const orderStatus = String(receiptData.orderStatus || '').toUpperCase();
+  const txType = String(receiptData.transactionType || '').toUpperCase();
+ 
+  const isRefund = orderStatus === 'REFUNDED' || printType.toUpperCase() === 'REFUNDED';
+  const isVoid = orderStatus === 'VOIDED' || printType.toUpperCase() === 'VOIDED';
+  const mult = isRefund ? -1 : 1;
+ 
+  // ── Determine Dynamic Title ──
+  let displayTitle = printType.toUpperCase();
+  if (displayTitle === 'REPRINT') {
+    if (isRefund) displayTitle = 'REPRINT - REFUNDED';
+    else if (isVoid) displayTitle = 'REPRINT - VOIDED';
+    else displayTitle = `REPRINT - ${'SALES INVOICE'}`;
+ 
+    // if (receiptData.reprintCount) {
+    //   displayTitle += ` (${receiptData.reprintCount})`;
+    // }
+  } else {
+    if (isRefund) displayTitle = 'REFUNDED';
+    else if (isVoid) displayTitle = 'VOIDED';
+    else displayTitle = 'SALES INVOICE';
+  }
+ 
+  const paymentHeader = isRefund ? 'REFUNDED AMOUNT' : 'PAYMENT';
+ 
+  const terminal     = process.env.NEXT_PUBLIC_WORK_STATION_NO ?? '';
+  const siNo         = String(receiptData.salesNumber ?? receiptData.transactionId).padStart(6, '0');
+  const vatableSales = receiptData.totalDue / 1.12;
+  const vatAmount    = vatableSales * 0.12;
+  const totalPaid    = receiptData.payments.reduce((s, p) => s + p.amount, 0);
+  const change       = totalPaid - receiptData.totalDue;
+  const customerDisplay = getCustomerDisplay(receiptData.customer);
+ 
+  const now = receiptData.date ?? new Date().toLocaleString('en-US', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: true,
+  });
+ 
+  const fmt = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+ 
+  const B   = 'font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;line-height:1.3;color:#000;';
+  const BLD = 'font-weight:900;';
+  const CTR = 'text-align:center;display:block;width:100%;';
+  const SML = 'font-size:10px;';
+  const HR  = (d = false) => `<hr style="border:none;border-top:1px ${d ? 'dashed #000' : 'solid #000'};margin:3px 0;">`;
+ 
+  const Row = (lbl: string, val: string, highlight = false) =>
+    `<table style="${B};width:100%;margin-bottom:2px;"><tr>
+      <td style="text-align:left;${highlight ? `${BLD}font-size:12px;white-space:nowrap;` : ''}">${lbl}</td>
+      <td style="text-align:right;white-space:nowrap;${highlight ? `${BLD}font-size:12px;` : ''}">${val}</td>
+    </tr></table>`;
+ 
+  const productRows = receiptData.products.map((p) => `
+    <tbody>
+      <tr><td colspan="4" style="text-align:left;${BLD}padding-top:3px;word-wrap:break-word;">${p.description}</td></tr>
+      <tr>
+        <td style="text-align:left;${SML}">${p.code}</td>
+        <td style="text-align:center;width:12%;">${p.quantity * mult}</td>
+        <td style="text-align:right;width:24%;white-space:nowrap;">${fmt(p.unitPrice)}</td>
+        <td style="text-align:right;width:24%;white-space:nowrap;">${fmt(p.amount * mult)}</td>
+      </tr>
+        ${p.discount > 0 ? `<tr><td colspan="2" style="text-align:left;${SML}">Disc ${p.discount}%</td><td colspan="2" style="text-align:right;white-space:nowrap;">${fmt(-p.discountAmount)}</td></tr>` : ''}
+      ${p.remarks ? `<tr><td colspan="4" style="text-align:left;${SML}font-style:italic;">${p.remarks}</td></tr>` : ''}
+    </tbody>
+  `).join('');
+ 
+  // Payments and change should always be represented absolutely
+  const paymentRows = receiptData.payments.map((p) => Row(p.method, fmt(p.amount))).join('');
+  const changeBlock = change > 0
+    ? `${HR(true)}${Row('CHANGE', fmt(change), true)}`
+    : '';
+  const remarksBlock = receiptData.remarks
+    ? `${HR(true)}<p style="${B}${SML}font-style:italic;text-align:left;">Remarks: ${receiptData.remarks}</p>`
+    : '';
+  const campaignBlock = receiptData.appliedCampaign
+    ? `${HR(true)}<p style="${B}${SML}${CTR}">Campaign: <strong>${receiptData.appliedCampaign.name}</strong>${receiptData.campaignDiscountAmount && receiptData.campaignDiscountAmount > 0 ? ` | Disc: ${fmt(-receiptData.campaignDiscountAmount)}` : ''}</p>`
+    : '';
+ 
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt #${receiptData.transactionId}</title>
+  <style>${PRINT_CSS}</style>
+</head>
+<body>
+<div class="wrap">
+  ${headerHtml}
+  ${HR()}
+  <div style="${B}${CTR}${BLD}letter-spacing:1px;margin:3px 0;">*** ${displayTitle} ***</div>
+  ${HR()}
+ 
+  <table style="${B}width:100%;margin-bottom:3px;table-layout:auto;">
+    ${customerDisplay ? `
+    <tr>
+      <td colspan="4" style="word-wrap:break-word;padding-bottom:2px;">
+        CUSTOMER: <span style="${BLD}">${customerDisplay}</span>
+      </td>
+    </tr>` : ''}
+    <tr>
+      <td style="white-space:nowrap;width:1%;">TERMINAL #</td>
+      <td style="white-space:nowrap;width:1%;padding-left:2px;">: ${terminal}</td>
+      <td style="text-align:right;padding-right:4px;">SI#</td>
+      <td style="text-align:right;white-space:nowrap;width:1%;">${siNo}</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;width:1%;">DATE</td>
+      <td colspan="3" style="padding-left:2px;white-space:nowrap;">: ${now}</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;width:1%;">CASHIER</td>
+      <td style="white-space:nowrap;width:1%;padding-left:2px;">: ${receiptData.cashier ?? 'sysadmin'}</td>
+      <td style="text-align:right;padding-right:4px;">SA:</td>
+      <td style="text-align:left;white-space:nowrap;width:1%;">${receiptData.associate ?? 'sysadmin'}</td>
+    </tr>
+    <tr>
+      <td style="white-space:nowrap;width:1%;">TYPE</td>
+      <td colspan="3" style="padding-left:2px;white-space:nowrap;">: ${receiptData.transactionType}</td>
+    </tr>
+  </table>
+ 
+  ${HR()}
+  <table style="${B}width:100%;">
+    <thead>
+      <tr>
+        <th style="text-align:left; width: 40%;">ITEM / CODE</th>
+        <th style="text-align:center;width:12%;">QTY</th>
+        <th style="text-align:right;width:24%;">PRICE</th>
+        <th style="text-align:right;width:24%;">AMOUNT</th>
+      </tr>
+      <tr><td colspan="4" style="padding:0;">${HR(true)}</td></tr>
+    </thead>
+    ${productRows}
+  </table>
+  ${HR()}
+ 
+  ${Row('Subtotal', fmt(receiptData.subtotal * mult))}
+  ${receiptData.totalDiscountAmount > 0 ? Row(`Total Discount`, fmt(-receiptData.totalDiscountAmount)) : ''}
+  ${Row('TOTAL AMOUNT DUE', fmt(receiptData.totalDue * mult), true)}
+  ${HR(true)}
+  ${Row('VATABLE SALES',    fmt(vatableSales * mult))}
+  ${Row('VAT (12%) AMOUNT', fmt(vatAmount * mult))}
+  ${Row('VAT-EXEMPT SALES', '0.00')}
+  ${Row('ZERO-RATED SALES', '0.00')}
+  ${HR()}
+ 
+  <div style="${B}${BLD}margin-bottom:2px;margin-top:3px;text-align:left;">${paymentHeader}</div>
+  ${paymentRows}
+  ${changeBlock}
+  ${campaignBlock}
+  ${remarksBlock}
+ 
+  ${HR(true)}
+  ${footerHtml}
+  <div style="${B}${CTR}${BLD}${SML}margin-top:6px;letter-spacing:1px;">* * * END OF RECEIPT * * *</div>
+ 
+</div>
+</body>
+</html>`;
+}
+ 

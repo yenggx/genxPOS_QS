@@ -1,0 +1,10 @@
+- Patched Config, added Z-reading-type, you can select what type of z-reading will the the store chose
+- Patched EOD, added checking for z-reading-type, made sure y-reading, z-reading, and both types is supported and aggregating properly.
+- Patched Cashier session to support workstation handling for per terminal
+- Patched Business Day to block changing of date until all terminal is closed for Per Terminal Type
+- Patched Login to block logging in to a already Closed/EODed Terminal until business day is changed, also, added a checking if the terminal is active for a business day or not
+- Rechecked the Cash-drop breakdown, it was functioning properly and confirmed with support what is the issue, turns out there was no issue
+- Replaced the () for short in X-Reading
+- Fixed the date fetching in the EOD, it was absolutely abysmal how it aggregates values, the date was wrong since it keeps fetching null, so the date becomes null it defaults to today, which is wrong.
+- Fixed the Y-reading aggregation, it's actually not just Y-reading, it's all the reports but it's fixed <3
+- Fixed the cart failing to delete after saving.	
